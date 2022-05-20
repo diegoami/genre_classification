@@ -38,19 +38,46 @@ def go(config: DictConfig):
         )
 
     if "preprocess" in steps_to_execute:
-
+        _ = mlflow.run(
+            os.path.join(root_path, "preprocess"),
+            "main",
+            parameters={
+                "input_artifact": "raw_data.parquet:latest",
+                "artifact_name": "preprocessed_data.parquet",
+                "artifact_type": "preprocessed_data",
+                "artifact_description": "Data to preprocess"
+            },
+        )
         ## YOUR CODE HERE: call the preprocess step
-        pass
 
     if "check_data" in steps_to_execute:
-
+        _ = mlflow.run(
+            os.path.join(root_path, "check_data"),
+            "main",
+            parameters={
+                "input_artifact": "preprocessed_data.parquet:latest",
+                "artifact_name": "check_data.parquet",
+                "artifact_type": "check_data",
+                "artifact_description": "Data to check"
+            },
+        )
         ## YOUR CODE HERE: call the check_data step
-        pass
 
-    if "segregate" in steps_to_execute:
+     if "segregate" in steps_to_execute:
+        _ = mlflow.run(
+            os.path.join(root_path, "check_data"),
+            "main",
+            parameters={
+                "input_artifact": "check_data.parquet:latest",
+                "artifact_name": "segregate.parquet",
+                "artifact_type": "segregate",
+                "artifact_description": "Segregated data"
+            },
+        )
+
 
         ## YOUR CODE HERE: call the segregate step
-        pass
+
 
     if "random_forest" in steps_to_execute:
 
